@@ -101,4 +101,4 @@ Bug reports, accessibility feedback and translation corrections are welcome thro
 
 Developed and operated by **[Ploos AS](https://ploos.no/)**.
 
-PWGen is publicly readable on GitHub. No open-source license is asserted here; reuse rights depend on the repository's actual license terms.
+Licensed under the [MIT License](LICENSE). Copyright © 2026 Ploos AS.
