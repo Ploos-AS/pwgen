@@ -14,7 +14,7 @@ from deploy.queue_snapshot import READY_NAME
 
 MAX_READY = 32
 MAX_QUEUE_BYTES = 64 * 1024 * 1024
-RECEIPT_NAME = re.compile(r"[0-9a-f]{40}\\.json\\Z")
+RECEIPT_NAME = re.compile(r"[0-9a-f]{40}\.json\Z")
 
 
 class QueueLimitError(ValueError):
