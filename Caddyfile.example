@@ -1,0 +1,39 @@
+# Example Caddy site configuration. Merge into /etc/caddy/sites/pwgen.caddy.
+# Ensure the caddy system user can read the app files (ACL on the customer subtree).
+# Add pwgen.pl after registration and DNS are confirmed.
+pwgen.be, pwgen.eu, pwgen.es, pwgen.uk {
+    root * /srv/ploos-hosting/customers/pwgen/app
+    encode zstd gzip
+    header {
+        Content-Security-Policy "default-src 'none'; script-src 'self'; style-src 'self'; img-src 'self'; connect-src 'none'; font-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'; frame-ancestors 'none'; upgrade-insecure-requests"
+        Referrer-Policy "no-referrer"
+        X-Content-Type-Options "nosniff"
+        X-Frame-Options "DENY"
+        Permissions-Policy "camera=(), microphone=(), geolocation=()"
+        Strict-Transport-Security "max-age=31536000"
+    }
+    file_server
+}
+
+www.pwgen.be {
+    redir https://pwgen.be{uri} permanent
+}
+www.pwgen.eu {
+    redir https://pwgen.eu{uri} permanent
+}
+www.pwgen.es {
+    redir https://pwgen.es{uri} permanent
+}
+www.pwgen.uk {
+    redir https://pwgen.uk{uri} permanent
+}
+
+# Uncomment after pwgen.pl is active and DNS points to Bragi:
+# pwgen.pl {
+#     root * /srv/ploos-hosting/customers/pwgen/app
+#     import ... # Keep identical headers to the main site block.
+#     file_server
+# }
+# www.pwgen.pl {
+#     redir https://pwgen.pl{uri} permanent
+# }
