@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="description" content="Generate secure passwords privately in your browser.">
+  <meta name="referrer" content="no-referrer">
+  <title>PWGen — Private Password Generator</title>
+  <link rel="stylesheet" href="/styles.css">
+  <script src="/src/app.js" type="module"></script>
+</head>
+<body>
+  <main class="shell">
+    <header>
+      <strong class="brand">PW<span>Gen</span></strong>
+      <label class="lang-label"><span id="language-label">Language</span>
+        <select id="language" aria-label="Language">
+          <option value="en">English</option><option value="en-GB">English (UK)</option>
+          <option value="nl">Nederlands</option><option value="fr">Français</option>
+          <option value="es">Español</option><option value="pl">Polski</option>
+        </select>
+      </label>
+    </header>
+    <section class="intro">
+      <span class="privacy-pill" id="privacy">Generated on your device • Never sent to a server</span>
+      <h1 id="heading">Create a secure password</h1>
+      <p id="subheading">Free, private password generation using cryptographically secure randomness.</p>
+    </section>
+    <section class="card">
+      <div class="tabs" role="tablist" aria-label="Generator mode">
+        <button id="simple-tab" role="tab" aria-selected="true" class="selected" type="button">Simple</button>
+        <button id="ultimate-tab" role="tab" aria-selected="false" type="button">Ultimate</button>
+      </div>
+      <div class="field">
+        <label for="result" id="result-label">Generated password</label>
+        <div class="result-row">
+          <input id="result" readonly autocomplete="off" spellcheck="false">
+          <button id="copy" type="button">Copy</button>
+        </div>
+        <div id="feedback" role="status" aria-live="polite"></div>
+      </div>
+      <section id="simple-panel" role="tabpanel" aria-labelledby="simple-tab">
+        <p id="simple-hint">One click generates a strong 20-character password.</p>
+      </section>
+      <section id="ultimate-panel" role="tabpanel" aria-labelledby="ultimate-tab" hidden>
+        <label for="length"><span id="length-label">Length</span>: <output id="length-value">24</output></label>
+        <input type="range" id="length" min="12" max="128" value="24">
+        <div class="choices">
+          <label><input type="checkbox" id="lower" checked> <span id="lower-label">Lowercase</span></label>
+          <label><input type="checkbox" id="upper" checked> <span id="upper-label">Uppercase</span></label>
+          <label><input type="checkbox" id="digits" checked> <span id="digits-label">Numbers</span></label>
+          <label><input type="checkbox" id="symbols" checked> <span id="symbols-label">Symbols</span></label>
+        </div>
+      </section>
+      <button id="generate" class="generate" type="button">Generate password</button>
+    </section>
+    <footer>
+      <p id="footer-privacy">No analytics. No password storage. No third-party scripts.</p>
+      <div class="footer-links">
+        <a href="https://github.com/Ploos-AS/pwgen" target="_blank" rel="noopener noreferrer" id="source-link">View source on GitHub</a>
+        <span aria-hidden="true">·</span>
+        <a href="https://ploos.no/" target="_blank" rel="noopener noreferrer" id="ploos-link">A service by Ploos AS</a>
+      </div>
+    </footer>
+  </main>
+</body>
+</html>

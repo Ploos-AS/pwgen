@@ -1,0 +1,68 @@
+name: Deploy PWGen to Bragi
+
+# Intentionally manual until the host entrypoint and SSH secret are installed.
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: pwgen-bragi-deploy
+  cancel-in-progress: false
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: npm test
+      - run: python3 -m unittest discover -s tests/deploy -v
+
+  deploy:
+    needs: test
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    environment: pwgen-production
+    steps:
+      - uses: actions/checkout@v4
+      - name: Prepare restricted SSH key
+        env:
+          DEPLOY_KEY: ${{ secrets.DEPLOY_SSH_KEY }}
+          DEPLOY_HOST: ${{ vars.DEPLOY_HOST }}
+        run: |
+          set -eu
+          test -n "$DEPLOY_KEY"
+          test -n "$DEPLOY_HOST"
+          install -m 700 -d "$HOME/.ssh"
+          printf '%s\n' "$DEPLOY_KEY" > "$HOME/.ssh/pwgen_key"
+          chmod 600 "$HOME/.ssh/pwgen_key"
+          # Host key is pinned, never obtained with ssh-keyscan at deploy time.
+          printf '%s\n' "${{ secrets.DEPLOY_KNOWN_HOSTS }}" > "$HOME/.ssh/known_hosts"
+          chmod 600 "$HOME/.ssh/known_hosts"
+          test -s "$HOME/.ssh/known_hosts"
+      - name: Package allowlisted static assets
+        run: |
+          set -eu
+          tar -czf "$RUNNER_TEMP/pwgen.tar.gz" \
+            index.html styles.css src/generator.js src/i18n.js src/app.js
+      - name: Upload release using restricted SSH command
+        env:
+          DEPLOY_HOST: ${{ vars.DEPLOY_HOST }}
+        run: |
+          set -eu
+          ssh -i "$HOME/.ssh/pwgen_key" -o IdentitiesOnly=yes \
+            -o StrictHostKeyChecking=yes -o BatchMode=yes \
+            "pwgen-deploy@$DEPLOY_HOST" "upload $GITHUB_SHA" \
+            < "$RUNNER_TEMP/pwgen.tar.gz"
+      - name: Activate release
+        env:
+          DEPLOY_HOST: ${{ vars.DEPLOY_HOST }}
+        run: |
+          set -eu
+          ssh -i "$HOME/.ssh/pwgen_key" -o IdentitiesOnly=yes \
+            -o StrictHostKeyChecking=yes -o BatchMode=yes \
+            "pwgen-deploy@$DEPLOY_HOST" "activate $GITHUB_SHA"

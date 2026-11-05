@@ -1,0 +1,26 @@
+name: Deploy security tests
+
+on:
+  push:
+    paths:
+      - 'deploy/**'
+      - 'tests/deploy/**'
+      - '.github/workflows/deploy-security.yml'
+  pull_request:
+    paths:
+      - 'deploy/**'
+      - 'tests/deploy/**'
+      - '.github/workflows/deploy-security.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run deployment archive security tests
+        run: python3 -m unittest discover -s tests/deploy -p 'test_*.py' -v
