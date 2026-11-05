@@ -1,0 +1,37 @@
+# DESIGN DRAFT — DO NOT INSTALL OR ENABLE ON BRAGI.
+# Requires root-owned code installation, root-controlled parent paths,
+# hardened queue processing, and a reviewed fixed entrypoint.
+[Unit]
+Description=PWGen restricted release publisher (draft)
+Documentation=https://github.com/Ploos-AS/pwgen
+After=local-fs.target
+ConditionPathIsDirectory=/var/lib/ploos-deploy/pwgen
+
+[Service]
+Type=oneshot
+User=root
+Group=root
+# The referenced executable does not exist yet. This unit is intentionally
+# not deployable until a reviewed entrypoint is installed.
+ExecStart=/usr/local/libexec/ploos/pwgen-publisher
+UMask=0077
+NoNewPrivileges=yes
+PrivateTmp=yes
+PrivateDevices=yes
+ProtectSystem=strict
+ProtectHome=yes
+ProtectKernelTunables=yes
+ProtectKernelModules=yes
+ProtectControlGroups=yes
+ProtectClock=yes
+LockPersonality=yes
+RestrictSUIDSGID=yes
+RestrictRealtime=yes
+RestrictAddressFamilies=AF_UNIX
+SystemCallArchitectures=native
+CapabilityBoundingSet=
+AmbientCapabilities=
+ReadWritePaths=/var/lib/ploos-deploy/pwgen
+ReadWritePaths=/srv/ploos-hosting/customers/pwgen/releases
+ReadWritePaths=/srv/ploos-hosting/customers/pwgen
+TimeoutStartSec=90
