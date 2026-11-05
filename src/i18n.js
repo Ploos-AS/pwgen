@@ -11,6 +11,18 @@ export const messages = {
     source:"View source on GitHub", ploos:"A service by Ploos AS"
   },
   "en-GB": {},
+  de: {
+    language:"Sprache", privacy:"Auf deinem Gerät erstellt • Niemals an einen Server gesendet",
+    heading:"Ein sicheres Passwort erstellen", subheading:"Kostenlose, private Passwortgenerierung mit kryptografisch sicherem Zufall.",
+    simple:"Einfach", ultimate:"Erweitert", result:"Generiertes Passwort", copy:"Kopieren", copied:"Kopiert!",
+    simpleHint:"Mit einem Klick ein starkes Passwort mit 20 Zeichen erstellen.",
+    length:"Länge", lower:"Kleinbuchstaben", upper:"Großbuchstaben", digits:"Zahlen", symbols:"Sonderzeichen",
+    generate:"Passwort generieren", choose:"Wähle mindestens einen Zeichentyp aus.",
+    copyError:"Kopieren fehlgeschlagen. Bitte wähle das Passwort aus und kopiere es manuell.",
+    footerPrivacy:"Keine Analyse-Tools. Keine Passwortspeicherung. Keine Skripte von Drittanbietern.",
+    source:"Quellcode auf GitHub ansehen", ploos:"Ein Dienst von Ploos AS"
+  },
+
   nl: {
     language:"Taal", privacy:"Op je apparaat gegenereerd • Niets naar een server verzonden",
     heading:"Maak een veilig wachtwoord", subheading:"Gratis, privé en met cryptografisch veilige willekeurige getallen.",
