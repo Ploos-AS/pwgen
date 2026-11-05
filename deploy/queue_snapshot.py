@@ -11,7 +11,7 @@ from pathlib import Path
 
 from deploy.archive_validator import InvalidRelease, MAX_ARCHIVE
 
-READY_NAME = re.compile(r"([0-9a-f]{40})\\.tar\\.gz\\Z")
+READY_NAME = re.compile(r"([0-9a-f]{40})\.tar\.gz\Z")
 CHUNK = 64 * 1024
 
 
