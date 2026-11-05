@@ -31,8 +31,8 @@ jobs:
       - uses: actions/checkout@v4
       - name: Prepare restricted SSH key
         env:
-          DEPLOY_KEY: ${{ secrets.PWGEN_BRAGI_SSH_KEY }}
-          DEPLOY_HOST: ${{ vars.PWGEN_BRAGI_HOST }}
+          DEPLOY_KEY: ${{ secrets.DEPLOY_SSH_KEY }}
+          DEPLOY_HOST: ${{ vars.DEPLOY_HOST }}
         run: |
           set -eu
           test -n "$DEPLOY_KEY"
@@ -41,7 +41,7 @@ jobs:
           printf '%s\n' "$DEPLOY_KEY" > "$HOME/.ssh/pwgen_key"
           chmod 600 "$HOME/.ssh/pwgen_key"
           # Host key is pinned, never obtained with ssh-keyscan at deploy time.
-          printf '%s\n' "${{ secrets.PWGEN_BRAGI_KNOWN_HOSTS }}" > "$HOME/.ssh/known_hosts"
+          printf '%s\n' "${{ secrets.DEPLOY_KNOWN_HOSTS }}" > "$HOME/.ssh/known_hosts"
           chmod 600 "$HOME/.ssh/known_hosts"
           test -s "$HOME/.ssh/known_hosts"
       - name: Package allowlisted static assets
@@ -51,7 +51,7 @@ jobs:
             index.html styles.css src/generator.js src/i18n.js src/app.js
       - name: Upload release using restricted SSH command
         env:
-          DEPLOY_HOST: ${{ vars.PWGEN_BRAGI_HOST }}
+          DEPLOY_HOST: ${{ vars.DEPLOY_HOST }}
         run: |
           set -eu
           ssh -i "$HOME/.ssh/pwgen_key" -o IdentitiesOnly=yes \
@@ -60,7 +60,7 @@ jobs:
             < "$RUNNER_TEMP/pwgen.tar.gz"
       - name: Activate release
         env:
-          DEPLOY_HOST: ${{ vars.PWGEN_BRAGI_HOST }}
+          DEPLOY_HOST: ${{ vars.DEPLOY_HOST }}
         run: |
           set -eu
           ssh -i "$HOME/.ssh/pwgen_key" -o IdentitiesOnly=yes \
