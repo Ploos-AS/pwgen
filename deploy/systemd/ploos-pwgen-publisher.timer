@@ -1,0 +1,12 @@
+# DESIGN DRAFT — DO NOT INSTALL OR ENABLE ON BRAGI.
+[Unit]
+Description=Check PWGen release queue (draft)
+
+[Timer]
+OnBootSec=2min
+OnUnitInactiveSec=30s
+AccuracySec=5s
+Unit=ploos-pwgen-publisher.service
+
+[Install]
+WantedBy=timers.target
